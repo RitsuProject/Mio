@@ -59,7 +59,7 @@ export default {
         const song: OpeningsMoeResponse =
           songs[Math.floor(Math.random() * songs.length)];
 
-        song.file = `https://openings.moe/video/${song.file}.mp4`;
+        song.file = `https://openings.moe/video/${song.file}.webm`;
 
         res.json({
           name: song.source,
