@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
-import bodyParser from "body-parser";
 import { config } from "dotenv";
 import { resolve } from "path";
 import connect from "./util/db";
 import routes from "./routes";
 import { readFileSync } from "fs";
+
+require("express-async-errors");
 
 config({ path: resolve(__dirname, "../.env") });
 
