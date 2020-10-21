@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ThemesController from "src/controllers/ThemesController";
+import ThemesController from "../controllers/ThemesController";
 const routes = Router();
 
 routes.get("/", (req, res) => {
