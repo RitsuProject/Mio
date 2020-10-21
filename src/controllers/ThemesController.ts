@@ -61,7 +61,12 @@ export default {
 
         song.file = `https://openings.moe/video/${song.file}.mp4`;
 
-        res.json(song);
+        res.json({
+          name: song.source,
+          link: song.file,
+          type: `${song.title.includes("Opening") ? "OP" : "ED"}`,
+          full: song,
+        });
         break;
       }
     }
