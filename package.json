@@ -6,7 +6,7 @@
   "author": "FelipeSazz <felipe@sazz.fail>",
   "license": "MIT",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "ts-node src/main.ts",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/main.ts"
   },
   "devDependencies": {
