@@ -11,5 +11,6 @@ routes.get("/", (req, res) => {
 // -> Description: Used as a proxy to control themes paid by Ritsu.
 
 routes.get("/themes/random", ThemesController.getRandomTheme);
+routes.get("/themes/random/year", ThemesController.getRandomThemeFromYear);
 
 export default routes;

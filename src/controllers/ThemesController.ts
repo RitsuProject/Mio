@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import HttpCodes from "../util/codes";
 import p from "phin";
 
 interface OpeningsMoeResponse {
@@ -15,6 +16,12 @@ interface OpeningsMoeResponse {
 export default {
   async getRandomTheme(req: Request, res: Response) {
     const { provider } = req.query;
+
+    if (!provider)
+      return res.status(HttpCodes.Bad_Request).json({
+        err: "no_provider_query",
+        message: "A provider was not specified.",
+      });
 
     switch (provider) {
       case "animethemes": {
@@ -58,5 +65,43 @@ export default {
         break;
       }
     }
+  },
+
+  async getRandomThemeFromYear(req: Request, res: Response) {
+    const { year } = req.query;
+
+    if (!year)
+      return res.status(HttpCodes.Bad_Request).json({
+        err: "no_year_query",
+        message: "A year was not specified.",
+      });
+
+    const atResponse: any = await p({
+      method: "GET",
+      url: `https://animethemes.dev/api/anime?filter[year]=${year}`,
+      parse: "json",
+    });
+
+    const animes = atResponse.body.anime;
+    const anime = animes[Math.floor(Math.random() * animes.length)];
+    if (anime === undefined)
+      return res.status(HttpCodes.Bad_Request).json({
+        err: "no_anime",
+        message: "There are no anime that year.",
+      });
+
+    const animeLink = anime.themes[0].entries[0].videos[0].link.replace(
+      "animethemes.dev",
+      "animethemes.moe"
+    );
+
+    res.json({
+      warning:
+        "The filter per year only works using AnimeThemes as a provider.",
+      name: anime.name,
+      link: animeLink,
+      type: anime.themes[0].type,
+      full: anime,
+    });
   },
 };
