@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ImageController from "src/controllers/ImageController";
+import ImageController from "../controllers/ImageController";
 import ThemesController from "../controllers/ThemesController";
 const routes = Router();
 
