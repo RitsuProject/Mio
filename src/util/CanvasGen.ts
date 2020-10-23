@@ -46,12 +46,12 @@ export default {
       // NAME
       ctx.font = `40pt "Nunito" bold`;
       ctx.fillStyle = "#ff3860";
-      ctx.fillText(name, 30, 125, 665);
+      ctx.fillText(name, 30, 125, 810);
 
       // TYPE
       ctx.font = `40pt "Nunito" bold`;
       ctx.fillStyle = "#ff3860";
-      ctx.fillText(type, 620, 1420);
+      ctx.fillText(type, 530, 1420);
 
       // COVER
       const COVER_IMAGE = new Canvas.Image();
