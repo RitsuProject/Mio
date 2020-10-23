@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import CanvasGen from "src/util/CanvasGen";
+import CanvasGen from "../util/CanvasGen";
 import HttpCodes from "../util/codes";
 
 export default {
