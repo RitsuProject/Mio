@@ -1,4 +1,5 @@
 import { Router } from "express";
+import ImageController from "src/controllers/ImageController";
 import ThemesController from "../controllers/ThemesController";
 const routes = Router();
 
@@ -6,11 +7,9 @@ routes.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-// == [ THEMES ENDPOINTS ] ==
-// -> Version: 1
-// -> Description: Used as a proxy to control themes paid by Ritsu.
+routes.get("/themes/random", ThemesController.getRandomTheme); // Get random theme from Openings.moe/AnimeThemes
+routes.get("/themes/random/year", ThemesController.getRandomThemeFromYear); // Get random theme using year filter.
 
-routes.get("/themes/random", ThemesController.getRandomTheme);
-routes.get("/themes/random/year", ThemesController.getRandomThemeFromYear);
+routes.get("/image/answser", ImageController.gen); // Generate the answser card.
 
 export default routes;

@@ -16,6 +16,7 @@ connect(process.env.MONGOURI);
 
 app.use(cors());
 app.use(express.json());
+app.set("view engine", "ejs");
 app.use(routes);
 
 app.listen(PORT, () => {
