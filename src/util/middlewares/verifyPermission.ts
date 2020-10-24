@@ -10,6 +10,12 @@ export default async function verifyPermission(
   const { token } = req.body;
   const { id } = req.params;
 
+  if (!token)
+    return res.status(400).json({
+      err: "bad_request",
+      message: "Invalid Token.",
+    });
+
   const user = await getUserObject(token);
   if (user === null)
     return res.status(400).json({

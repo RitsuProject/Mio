@@ -15,7 +15,7 @@ interface MeResponse {
 export default async function checkPermissions(
   token: string
 ): Promise<MeResponse> {
-  const guildsResponse: any = await phin({
+  const userResponse: any = await phin({
     method: "GET",
     url: "https://discordapp.com/api/users/@me",
     headers: {
@@ -24,11 +24,11 @@ export default async function checkPermissions(
     parse: "json",
   });
 
-  if (guildsResponse.statusCode === 200) {
+  if (userResponse.statusCode === 200) {
     console.log("ok!!");
-    return guildsResponse.body;
+    return userResponse.body;
   } else {
-    console.log(guildsResponse.body);
+    console.log(userResponse.body);
     return null;
   }
 }

@@ -3,6 +3,7 @@ import verifyPermission from "../util/middlewares/verifyPermission";
 import GuildsController from "../controllers/GuildsController";
 import ImageController from "../controllers/ImageController";
 import ThemesController from "../controllers/ThemesController";
+import UserController from "../controllers/UserController";
 const routes = Router();
 
 routes.get("/", (req, res) => {
@@ -13,6 +14,8 @@ routes.get("/themes/random", ThemesController.getRandomTheme); // Get random the
 routes.get("/themes/random/year", ThemesController.getRandomThemeFromYear); // Get random theme using year filter.
 
 routes.get("/image/answser", ImageController.gen); // Generate the answser card.
+
+routes.get("/user/guilds", UserController.getGuilds);
 
 routes.get("/guilds/:id/config", verifyPermission, GuildsController.config); // Get the server config.
 routes.patch(
