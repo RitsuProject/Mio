@@ -3,7 +3,7 @@ import getGuilds from "../util/discord/auth/getGuilds";
 
 export default {
   async getGuilds(req: Request, res: Response) {
-    const { token } = req.body;
+    const token = req.header("authorization");
 
     if (!token)
       return res.status(400).json({

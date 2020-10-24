@@ -7,8 +7,10 @@ export default async function verifyPermission(
   res: Response,
   next: NextFunction
 ) {
-  const { token } = req.body;
+  const token = req.header("authorization");
   const { id } = req.params;
+
+  console.log(req.header("authorization"));
 
   if (!token)
     return res.status(400).json({
