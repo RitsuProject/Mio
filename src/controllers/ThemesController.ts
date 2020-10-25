@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import HttpCodes from "../util/codes";
 import p from "phin";
+import Servers from "src/models/Servers";
 
 interface OpeningsMoeResponse {
   title: string;
@@ -107,6 +108,14 @@ export default {
       link: animeLink,
       type: anime.themes[0].type,
       full: anime,
+    });
+  },
+  async serverStatus(req: Request, res: Response) {
+    const server = await Servers.findById("status");
+
+    res.json({
+      animethemes: server.animethemes,
+      openingsmoe: server.openingsmoe,
     });
   },
 };

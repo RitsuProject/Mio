@@ -16,6 +16,7 @@ export default {
 
     return res.json({
       guild: guild,
+      guildIcon: cachedGuild.iconURL(),
       channels: channels,
     });
   },
