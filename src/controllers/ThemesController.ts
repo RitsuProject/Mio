@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import HttpCodes from "../util/codes";
 import p from "phin";
-import Servers from "src/models/Servers";
+import Servers from "../models/Servers";
 
 interface OpeningsMoeResponse {
   title: string;
