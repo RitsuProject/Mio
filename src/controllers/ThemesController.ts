@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import HttpCodes from "../util/codes";
 import p from "phin";
 import Servers from "../models/Servers";
+import Themes from "../models/Theme";
+import generateId from "../util/generateId";
 
 interface OpeningsMoeResponse {
   title: string;
@@ -70,6 +72,21 @@ export default {
         });
         break;
       }
+      case "tsumugi": {
+        // https://stackoverflow.com/questions/39277670/how-to-find-random-record-in-mongoose
+        await Themes.countDocuments({}).exec(function (err, count) {
+          // Get a random entry
+          var random = Math.floor(Math.random() * count);
+
+          // Again query all users but only fetch one offset by our random #
+          Themes.findOne()
+            .skip(random)
+            .exec(function (result) {
+              // Tada! random user
+              return res.json(result);
+            });
+        });
+      }
     }
   },
 
@@ -109,6 +126,27 @@ export default {
       type: anime.themes[0].type,
       full: anime,
     });
+  },
+  async addTheme(req: Request, res: Response) {
+    const { name, type, mal, url, year, song, artist, password } = req.body;
+
+    if (!name || !mal || !url || !year || !song || !artist || !password)
+      return res.status(400).send("dude, plz set the correct values.");
+
+    if (password !== process.env.THEME_PASS)
+      return res.status(401).send("die oni-chan.");
+
+    const theme = new Themes({
+      _id: await generateId(),
+      name: name,
+      songName: song,
+      type: type,
+      artist: artist,
+      year: year,
+      url: url,
+      mal: mal,
+    }).save();
+    res.json(theme);
   },
   async serverStatus(req: Request, res: Response) {
     const server = await Servers.findById("status");

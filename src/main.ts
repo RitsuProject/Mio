@@ -13,7 +13,7 @@ require("express-async-errors");
 config({ path: resolve(__dirname, "../.env") });
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 443;
 connect(process.env.MONGOURI);
 
 app.use(cors());

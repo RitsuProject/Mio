@@ -13,6 +13,7 @@ routes.get("/", (req, res) => {
 routes.get("/themes/random", ThemesController.getRandomTheme); // Get random theme from Openings.moe/AnimeThemes
 routes.get("/themes/random/year", ThemesController.getRandomThemeFromYear); // Get random theme using year filter.
 routes.get("/themes/status", ThemesController.serverStatus); // Get servers statuses.
+routes.post("/themes/add", ThemesController.addTheme);
 
 routes.get("/image/answser", ImageController.gen); // Generate the answser card.
 
