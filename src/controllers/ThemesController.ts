@@ -82,7 +82,7 @@ export default {
           Themes.findOne()
             .skip(random)
             .exec(function (result) {
-              // Tada! random user
+              // yay! random theme
               return res.json(result);
             });
         });
