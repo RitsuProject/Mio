@@ -7,6 +7,7 @@ import routes from "./routes";
 import { readFileSync } from "fs";
 import client from "./util/discord/bot/client";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 
 require("express-async-errors");
 
@@ -18,6 +19,7 @@ connect(process.env.MONGOURI);
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.set("view engine", "ejs");
 app.use(routes);
