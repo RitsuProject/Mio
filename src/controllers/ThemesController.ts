@@ -128,7 +128,7 @@ export default {
     });
   },
   async addTheme(req: Request, res: Response) {
-    const { name, type, mal, url, year, song, artist, password } = req.body;
+    const { name, type, mal, url, year, song, artist, password } = req.query;
 
     if (!name || !mal || !url || !year || !song || !artist || !password)
       return res.status(400).send("dude, plz set the correct values.");
