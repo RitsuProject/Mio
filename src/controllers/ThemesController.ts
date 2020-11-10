@@ -175,10 +175,12 @@ export default {
 
         const songs = oMResponse.body;
         const song: OpeningsMoeResponse = songs.filter(
-          (s) => s.source === "Sword Art Online"
+          (s) => s.source === value
         )[0];
 
-        if (!song.source)
+        console.log(song);
+
+        if (!song)
           return res.status(HttpCodes.Bad_Request).json({
             err: "no_anime",
             message: "There are no anime.",
