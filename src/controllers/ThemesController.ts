@@ -127,6 +127,75 @@ export default {
       full: anime,
     });
   },
+  async searchAnime(req: Request, res: Response) {
+    const { provider, value } = req.query;
+
+    if (!provider)
+      return res.status(HttpCodes.Bad_Request).json({
+        err: "no_provider_query",
+        message: "A provider was not specified.",
+      });
+
+    switch (provider) {
+      case "animethemes": {
+        const atResponse: any = await p({
+          method: "GET",
+          url: `https://animethemes.dev/api/search?q=${value}&limit=1&fields=videos`,
+          parse: "json",
+        });
+
+        if (atResponse.body.anime.length > 0) {
+          const videos = atResponse.body.videos;
+          const video = videos[Math.floor(Math.random() * videos.length)];
+          const animeLink: String = video.link.replace(
+            "animethemes.dev",
+            "animethemes.moe"
+          );
+
+          res.json({
+            name: video.entries[0].theme.anime.name,
+            link: animeLink,
+            type: video.entries[0].theme.type,
+            full: video,
+          });
+        } else {
+          return res.status(HttpCodes.Bad_Request).json({
+            err: "no_anime",
+            message: "There are no anime.",
+          });
+        }
+        break;
+      }
+      case "openingsmoe": {
+        const oMResponse: any = await p({
+          method: "GET",
+          url: "https://openings.moe/api/list.php",
+          parse: "json",
+        });
+
+        const songs = oMResponse.body;
+        const song: OpeningsMoeResponse = songs.filter(
+          (s) => s.source === "Sword Art Online"
+        )[0];
+
+        if (!song.source)
+          return res.status(HttpCodes.Bad_Request).json({
+            err: "no_anime",
+            message: "There are no anime.",
+          });
+
+        song.file = `https://openings.moe/video/${song.file}.webm`;
+
+        res.json({
+          name: song.source,
+          link: song.file,
+          type: `${song.title.includes("Opening") ? "OP" : "ED"}`,
+          full: song,
+        });
+        break;
+      }
+    }
+  },
   async addTheme(req: Request, res: Response) {
     const { name, type, mal, url, year, song, artist, password } = req.body;
 
