@@ -159,18 +159,19 @@ export default {
         });
 
         if (atResponse.body.anime.length > 0) {
-          const videos = atResponse.body.videos;
-          const video = videos[Math.floor(Math.random() * videos.length)];
-          const animeLink: String = video.link.replace(
+          const animes = atResponse.body.anime;
+          const anime = animes[Math.floor(Math.random() * animes.length)];
+
+          const animeLink = anime.themes[0].entries[0].videos[0].link.replace(
             "animethemes.dev",
             "animethemes.moe"
           );
 
           res.json({
-            name: video.entries[0].theme.anime.name,
+            name: anime.name,
             link: animeLink,
-            type: video.entries[0].theme.type,
-            full: video,
+            type: anime.themes[0].type,
+            full: anime,
           });
         } else {
           return res.status(HttpCodes.Bad_Request).json({
