@@ -33,6 +33,13 @@ export default {
           method: "GET",
           url: `https://animethemes.dev/api/video?page[size]=200&page[number]=${randomPage}`,
           parse: "json",
+        }).catch(() => {
+          return res.json({
+            name: "Ritsu is unavailable.",
+            link: "https://files.catbox.moe/e9k222.mp3",
+            type: "go to support server",
+            full: {},
+          });
         });
 
         const videos = atResponse.body.videos;
@@ -142,6 +149,13 @@ export default {
           method: "GET",
           url: `https://animethemes.dev/api/search?q=${value}&limit=1&fields=videos`,
           parse: "json",
+        }).catch(() => {
+          return res.json({
+            name: "Ritsu is unavailable.",
+            link: "https://files.catbox.moe/e9k222.mp3",
+            type: "go to support server",
+            full: {},
+          });
         });
 
         if (atResponse.body.anime.length > 0) {
