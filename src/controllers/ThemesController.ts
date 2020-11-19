@@ -35,9 +35,9 @@ export default {
           parse: "json",
         }).catch(() => {
           return res.json({
-            name: "Ritsu is unavailable.",
+            name: "K-On!: Ura-On!",
             link: "https://files.catbox.moe/e9k222.mp3",
-            type: "go to support server",
+            type: "ritsu is unavailable, go to support server",
             full: {},
           });
         });
