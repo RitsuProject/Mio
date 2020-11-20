@@ -1,6 +1,6 @@
 FROM node:12
 
-WORKDIR /usr/src/mio
+WORKDIR /usr/mio
 
 COPY package*.json ./
 
