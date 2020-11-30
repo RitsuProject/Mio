@@ -31,7 +31,7 @@ export default {
         const randomPage: Number = Math.floor(Math.random() * (131 - 1)) + 1;
         const atResponse: any = await p({
           method: "GET",
-          url: `https://animethemes.dev/api/video?page[size]=200&page[number]=${randomPage}`,
+          url: `https://staging.animethemes.moe/api/video?page[size]=200&page[number]=${randomPage}`,
           parse: "json",
         }).catch(() => {
           return res.json({
@@ -46,7 +46,7 @@ export default {
         const video = videos[Math.floor(Math.random() * videos.length)];
 
         const animeLink: String = video.link.replace(
-          "animethemes.dev",
+          "staging.animethemes.moe",
           "animethemes.moe"
         );
 
@@ -108,7 +108,7 @@ export default {
 
     const atResponse: any = await p({
       method: "GET",
-      url: `https://animethemes.dev/api/anime?filter[year]=${year}`,
+      url: `https://staging.animethemes.moe/api/anime?filter[year]=${year}`,
       parse: "json",
     });
 
@@ -121,7 +121,7 @@ export default {
       });
 
     const animeLink = anime.themes[0].entries[0].videos[0].link.replace(
-      "animethemes.dev",
+      "staging.animethemes.moe",
       "animethemes.moe"
     );
 
@@ -147,7 +147,7 @@ export default {
       case "animethemes": {
         const atResponse: any = await p({
           method: "GET",
-          url: `https://animethemes.dev/api/search?q=${value}&limit=1&fields=videos`,
+          url: `https://staging.animethemes.moe/api/search?q=${value}&limit=1&fields=videos`,
           parse: "json",
         }).catch(() => {
           return res.json({
@@ -163,7 +163,7 @@ export default {
           const anime = animes[Math.floor(Math.random() * animes.length)];
 
           const animeLink = anime.themes[0].entries[0].videos[0].link.replace(
-            "animethemes.dev",
+            "staging.animethemes.moe",
             "animethemes.moe"
           );
 
