@@ -79,21 +79,6 @@ export default {
         });
         break;
       }
-      case "tsumugi": {
-        // https://stackoverflow.com/questions/39277670/how-to-find-random-record-in-mongoose
-        await Themes.countDocuments().exec(function (_, count) {
-          // Get a random entry
-          var random = Math.floor(Math.random() * count);
-
-          // Again query all users but only fetch one offset by our random #
-          Themes.findOne()
-            .skip(random)
-            .exec(function (_, result) {
-              // yay! random theme
-              return res.json(result);
-            });
-        });
-      }
     }
   },
 
