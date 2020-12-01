@@ -1,3 +1,6 @@
+/**
+ * Round a Image (aka fancy border owo)
+ */
 export default {
   make(
     ctx: CanvasRenderingContext2D,
