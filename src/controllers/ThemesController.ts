@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import HttpCodes from "../util/codes";
 import p from "phin";
-import Servers from "../models/Servers";
-import Themes from "../models/Theme";
-import generateId from "../util/generateId";
+import yaml from "yaml";
+import axios from "axios";
 
 interface OpeningsMoeResponse {
   title: string;
@@ -17,6 +16,9 @@ interface OpeningsMoeResponse {
 }
 
 export default {
+  /**
+    Get a random theme from a specified provider.
+   */
   async getRandomTheme(req: Request, res: Response) {
     const { provider } = req.query;
 
@@ -33,13 +35,8 @@ export default {
           method: "GET",
           url: `https://staging.animethemes.moe/api/video?page[size]=200&page[number]=${randomPage}`,
           parse: "json",
-        }).catch(() => {
-          return res.json({
-            name: "K-On!: Ura-On!",
-            link: "https://files.catbox.moe/e9k222.mp3",
-            type: "ritsu is unavailable, go to support server",
-            full: {},
-          });
+        }).catch((e) => {
+          return res.status(HttpCodes.InternalError).send(e);
         });
 
         const videos = atResponse.body.videos;
@@ -63,6 +60,8 @@ export default {
           method: "GET",
           url: "https://openings.moe/api/list.php",
           parse: "json",
+        }).catch((e) => {
+          return res.status(HttpCodes.InternalError).send(e);
         });
 
         const songs = oMResponse.body;
@@ -81,7 +80,9 @@ export default {
       }
     }
   },
-
+  /**
+    Get a random theme from a specified year.
+   */
   async getRandomThemeFromYear(req: Request, res: Response) {
     const { year } = req.query;
 
@@ -111,14 +112,15 @@ export default {
     );
 
     res.json({
-      warning:
-        "The filter per year only works using AnimeThemes as a provider.",
       name: anime.name,
       link: animeLink,
       type: anime.themes[0].type,
       full: anime,
     });
   },
+  /**
+    Search a anime from a specified provider.
+   */
   async searchAnime(req: Request, res: Response) {
     const { provider, value } = req.query;
 
@@ -134,13 +136,8 @@ export default {
           method: "GET",
           url: `https://staging.animethemes.moe/api/search?q=${value}&limit=1&fields=videos`,
           parse: "json",
-        }).catch(() => {
-          return res.json({
-            name: "K-On!: Ura-On!",
-            link: "https://files.catbox.moe/e9k222.mp3",
-            type: "go to support server",
-            full: {},
-          });
+        }).catch((e) => {
+          return res.status(HttpCodes.InternalError).send(e);
         });
 
         if (atResponse.body.anime.length > 0) {
@@ -171,6 +168,8 @@ export default {
           method: "GET",
           url: "https://openings.moe/api/list.php",
           parse: "json",
+        }).catch((e) => {
+          return res.status(HttpCodes.InternalError).send(e);
         });
 
         const songs = oMResponse.body;
@@ -198,33 +197,29 @@ export default {
       }
     }
   },
-  async addTheme(req: Request, res: Response) {
-    const { name, type, mal, url, year, song, artist, password } = req.body;
-
-    if (!name || !mal || !url || !year || !song || !artist || !password)
-      return res.status(400).send("dude, plz set the correct values.");
-
-    if (password !== process.env.THEME_PASS)
-      return res.status(401).send("die oni-chan.");
-
-    const theme = new Themes({
-      _id: await generateId(),
-      name: name,
-      songName: song,
-      type: type,
-      artist: artist,
-      year: year,
-      url: url,
-      mal: mal,
-    }).save();
-    res.json(theme);
-  },
+  /**
+    Fetch providers statuses.
+   */
   async serverStatus(req: Request, res: Response) {
-    const server = await Servers.findById("status");
-
+    const animethemes = await axios.get(
+      "https://raw.githubusercontent.com/RitsuProject/ritsu-status/master/history/anime-themes.yml"
+    );
+    const animeThemesAPI = await axios.get(
+      "https://raw.githubusercontent.com/RitsuProject/ritsu-status/master/history/anime-themes-api.yml"
+    );
+    const openingsMoe = await axios.get(
+      "https://raw.githubusercontent.com/RitsuProject/ritsu-status/master/history/openings-moe.yml"
+    );
+    const animeThemesUPTime = yaml.parse(animethemes.data);
+    const animeThemesAPIUPTime = yaml.parse(animeThemesAPI.data);
+    const openingsmoeUPTime = yaml.parse(openingsMoe.data);
     res.json({
-      animethemes: server.animethemes,
-      openingsmoe: server.openingsmoe,
+      animethemes:
+        animeThemesUPTime.status === "up" &&
+        animeThemesAPIUPTime.status === "up"
+          ? "online"
+          : "offline",
+      openingsmoe: openingsmoeUPTime.status === "up" ? "online" : "offline",
     });
   },
 };
