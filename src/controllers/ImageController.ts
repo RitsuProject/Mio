@@ -8,7 +8,7 @@ export default {
     @restricted API Key required.
    */
   async gen(req: Request, res: Response) {
-    const { name, cover, type, apiKey } = req.query;
+    const { name, cover, type, apiKey } = req.body;
 
     if (!name || !cover || !type || !apiKey)
       return res.status(HttpCodes.Bad_Request).json({
