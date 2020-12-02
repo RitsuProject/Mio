@@ -4,10 +4,28 @@ import HttpCodes from "../util/codes";
 
 export default {
   /**
+    Generate the answer card V1
+    @deprecated
+   */
+  async gen(req: Request, res: Response) {
+    const { name, cover, type } = req.query;
+
+    if (!name || !cover || !type)
+      return res.status(HttpCodes.Bad_Request).json({
+        err: "no_correct_query",
+        message: "A query was not specified.",
+      });
+
+    const buff = await CanvasGen.answerCard(name, cover, type);
+
+    res.contentType("image/png");
+    res.end(buff);
+  },
+  /**
     Generate the answer card.
     @restricted API Key required.
    */
-  async gen(req: Request, res: Response) {
+  async genV2(req: Request, res: Response) {
     const { name, cover, type, apiKey } = req.body;
 
     if (!name || !cover || !type || !apiKey)

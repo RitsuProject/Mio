@@ -12,6 +12,7 @@ routes.get("/themes/random/year", ThemesController.getRandomThemeFromYear); // G
 routes.get("/themes/status", ThemesController.serverStatus); // Get providers statuses.
 routes.get("/themes/search", ThemesController.searchAnime); // Search a theme from specified providers.
 
-routes.post("/image/answser", ImageController.gen); // Generate the answser card.
+routes.get("/image/answser", ImageController.gen); // Generate the answser card.
+routes.post("/image/answser", ImageController.genV2); // Generate the answser card V2
 
 export default routes;

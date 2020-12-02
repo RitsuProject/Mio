@@ -43,15 +43,25 @@ export default {
         const video = videos[Math.floor(Math.random() * videos.length)];
 
         const animeLink: String = video.link.replace(
-          "staging.animethemes.moe",
-          "animethemes.moe"
+          "v.staging.animethemes.moe",
+          "animethemes.moe/video"
         );
+
+        const songDetails: any = await p({
+          method: "GET",
+          url: `https://staging.animethemes.moe/api/song/${video.entries[0].theme.id}`,
+          parse: "json",
+        });
 
         res.json({
           name: video.entries[0].theme.anime.name,
           link: animeLink,
           type: video.entries[0].theme.type,
-          full: video,
+          songName: songDetails.body.title,
+          songArtists:
+            songDetails.body.artists.length > 0
+              ? songDetails.body.artists
+              : ["Not Found"],
         });
         break;
       }
@@ -74,7 +84,8 @@ export default {
           name: song.source,
           link: song.file,
           type: `${song.title.includes("Opening") ? "OP" : "ED"}`,
-          full: song,
+          songName: song.song.title ? song.song.title : "None",
+          songArtists: song.song.artist ? [song.song.artist] : "None",
         });
         break;
       }
@@ -107,15 +118,25 @@ export default {
       });
 
     const animeLink = anime.themes[0].entries[0].videos[0].link.replace(
-      "staging.animethemes.moe",
-      "animethemes.moe"
+      "v.staging.animethemes.moe",
+      "animethemes.moe/video"
     );
+
+    const songDetails: any = await p({
+      method: "GET",
+      url: `https://staging.animethemes.moe/api/song/${anime.themes[0].id}`,
+      parse: "json",
+    });
 
     res.json({
       name: anime.name,
       link: animeLink,
       type: anime.themes[0].type,
-      full: anime,
+      songName: songDetails.body.title,
+      songArtists:
+        songDetails.body.artists.length > 0
+          ? songDetails.body.artists
+          : ["Not Found"],
     });
   },
   /**
@@ -145,15 +166,25 @@ export default {
           const anime = animes[Math.floor(Math.random() * animes.length)];
 
           const animeLink = anime.themes[0].entries[0].videos[0].link.replace(
-            "staging.animethemes.moe",
-            "animethemes.moe"
+            "v.staging.animethemes.moe",
+            "animethemes.moe/video"
           );
+
+          const songDetails: any = await p({
+            method: "GET",
+            url: `https://staging.animethemes.moe/api/song/${anime.themes[0].id}`,
+            parse: "json",
+          });
 
           res.json({
             name: anime.name,
             link: animeLink,
             type: anime.themes[0].type,
-            full: anime,
+            songName: songDetails.body.title,
+            songArtists:
+              songDetails.body.artists.length > 0
+                ? songDetails.body.artists
+                : ["Not Found"],
           });
         } else {
           return res.status(HttpCodes.Bad_Request).json({
@@ -191,7 +222,8 @@ export default {
           name: song.source,
           link: song.file,
           type: `${song.title.includes("Opening") ? "OP" : "ED"}`,
-          full: song,
+          songName: song.song.title ? song.song.title : "None",
+          songArtists: song.song.artist ? [song.song.artist] : "None",
         });
         break;
       }
