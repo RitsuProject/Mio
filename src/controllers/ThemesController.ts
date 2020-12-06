@@ -75,8 +75,13 @@ export default {
         });
 
         const songs = oMResponse.body;
-        const song: OpeningsMoeResponse =
-          songs[Math.floor(Math.random() * songs.length)];
+        const songDetails = songs[Math.floor(Math.random() * songs.length)];
+        const oMDetails: any = await p({
+          method: "GET",
+          url: `https://openings.moe/api/details.php?name=${songDetails.uid}`,
+          parse: "json",
+        });
+        const song: OpeningsMoeResponse = oMDetails.body;
 
         song.file = `https://openings.moe/video/${song.file}.webm`;
 
@@ -204,17 +209,20 @@ export default {
         });
 
         const songs = oMResponse.body;
-        const song: OpeningsMoeResponse = songs.filter(
-          (s) => s.source === value
-        )[0];
+        const songDetails = songs.filter((s) => s.source === value)[0];
 
-        console.log(song);
-
-        if (!song)
+        if (!songDetails)
           return res.status(HttpCodes.Bad_Request).json({
             err: "no_anime",
             message: "There are no anime.",
           });
+
+        const oMDetails: any = await p({
+          method: "GET",
+          url: `https://openings.moe/api/details.php?name=${songDetails.uid}`,
+          parse: "json",
+        });
+        const song: OpeningsMoeResponse = oMDetails.body;
 
         song.file = `https://openings.moe/video/${song.file}.webm`;
 
