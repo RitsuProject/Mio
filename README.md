@@ -1,6 +1,6 @@
 <h1 align="center">Mio</h1>
 
-<p align="center">📡 Ritsu Images and Themes MicroService</p>
+<p align="center">📡 Ritsu Images and Themes Back-end</p>
 
 <p align="center">
 <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
@@ -9,7 +9,7 @@
 <br>
 </p>
 
-Ritsu MicroService that generates images like the answer card and serves as a proxy for AnimeThemes and Openings.moe so that we can use them with the same response!
+Ritsu Back-end that generates images like the answer card and serves as a proxy for AnimeThemes and Openings.moe so that we can use them with the same response!
 
 ## Contributing or Self-Hosting.
 
