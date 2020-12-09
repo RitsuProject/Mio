@@ -89,8 +89,8 @@ export default {
           name: song.source,
           link: song.file,
           type: `${song.title.includes("Opening") ? "OP" : "ED"}`,
-          songName: song.song ? song.song.title : "None",
-          songArtists: song.song ? [song.song.artist] : "None",
+          songName: song.song ? song.song.title : "Not Found",
+          songArtists: song.song ? [song.song.artist] : ["Not Found"],
         });
         break;
       }
@@ -230,8 +230,8 @@ export default {
           name: song.source,
           link: song.file,
           type: `${song.title.includes("Opening") ? "OP" : "ED"}`,
-          songName: song.song ? song.song.title : "None",
-          songArtists: song.song ? [song.song.artist] : "None",
+          songName: song.song ? song.song.title : "Not Found",
+          songArtists: song.song ? [song.song.artist] : ["Not Found"],
         });
         break;
       }
