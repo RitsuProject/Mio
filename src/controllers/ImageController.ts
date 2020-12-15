@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import CanvasGen from "../util/CanvasGen";
 import HttpCodes from "../util/codes";
+require("express-async-errors");
 
 export default {
   /**

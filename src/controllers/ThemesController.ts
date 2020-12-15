@@ -3,6 +3,7 @@ import HttpCodes from "../util/codes";
 import p from "phin";
 import yaml from "yaml";
 import axios from "axios";
+require("express-async-errors");
 
 interface OpeningsMoeResponse {
   title: string;
