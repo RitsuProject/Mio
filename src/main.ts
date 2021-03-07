@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import { config } from "dotenv";
 import { resolve } from "path";
-import connect from "./util/db";
 import routes from "./routes";
 import { readFileSync } from "fs";
 import bodyParser from "body-parser";
@@ -20,7 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(routes);
 
 app.listen(PORT, async () => {
-  connect(process.env.MONGOURI); // Connect to the database
   console.log(readFileSync("title.txt", "utf8").toString());
   console.log(`[WebServer] Running at ${PORT}`);
 });

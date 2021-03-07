@@ -58,10 +58,10 @@ export default {
           name: video.entries[0].theme.anime.name,
           link: animeLink,
           type: video.entries[0].theme.type,
-          songName: songDetails.body.title,
+          songName: songDetails.body.song.title,
           songArtists:
-            songDetails.body.artists.length > 0
-              ? songDetails.body.artists
+            songDetails.body.song.artists.length > 0
+              ? songDetails.body.song.artists
               : ["Not Found"],
         });
         break;
@@ -161,14 +161,15 @@ export default {
       case "animethemes": {
         const atResponse: any = await p({
           method: "GET",
-          url: `https://staging.animethemes.moe/api/search?q=${value}&limit=1&fields=videos`,
+          url: `https://staging.animethemes.moe/api/search?q=${value}&fields=videos`,
           parse: "json",
         }).catch((e) => {
           return res.status(HttpCodes.InternalError).send(e);
         });
 
-        if (atResponse.body.anime.length > 0) {
-          const animes = atResponse.body.anime;
+        const animes = atResponse.body.search.anime;
+
+        if (animes.length > 0) {
           const anime = animes[Math.floor(Math.random() * animes.length)];
 
           const animeLink = anime.themes[0].entries[0].videos[0].link.replace(
@@ -188,8 +189,8 @@ export default {
             type: anime.themes[0].type,
             songName: songDetails.body.title,
             songArtists:
-              songDetails.body.artists.length > 0
-                ? songDetails.body.artists
+              songDetails.body.song.artists.length > 0
+                ? songDetails.body.song.artists
                 : ["Not Found"],
           });
         } else {
