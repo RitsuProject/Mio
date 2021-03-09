@@ -138,10 +138,10 @@ export default {
       name: anime.name,
       link: animeLink,
       type: anime.themes[0].type,
-      songName: songDetails.body.title,
+      songName: songDetails.body.song.title,
       songArtists:
-        songDetails.body.artists.length > 0
-          ? songDetails.body.artists
+        songDetails.body.song.artists.length > 0
+          ? songDetails.body.song.artists
           : ["Not Found"],
     });
   },
