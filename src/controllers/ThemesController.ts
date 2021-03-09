@@ -161,7 +161,7 @@ export default {
       case "animethemes": {
         const atResponse: any = await p({
           method: "GET",
-          url: `https://staging.animethemes.moe/api/search?q=${value}&fields=videos`,
+          url: `https://staging.animethemes.moe/api/search?q=${value}&limit=1&fields=videos`,
           parse: "json",
         }).catch((e) => {
           return res.status(HttpCodes.InternalError).send(e);
