@@ -16,7 +16,7 @@ export default {
       link: randomTheme.versions[0].sources[0].url,
       type: getThemeTypeByID(randomTheme.type),
       songName: randomTheme.title,
-      songArtists: randomTheme.artist,
+      songArtists: ['Not Found'],
     })
   },
 
@@ -44,7 +44,7 @@ export default {
       link: theme.versions[0].sources[0].url,
       type: getThemeTypeByID(theme.type),
       songName: theme.title,
-      songArtists: 'Not Found',
+      songArtists: ['Not Found'],
     })
   },
 
@@ -71,7 +71,7 @@ export default {
       link: randomTheme.versions[0].sources[0].url,
       type: getThemeTypeByID(randomTheme.type),
       songName: randomTheme.title,
-      songArtists: randomTheme.artist,
+      songArtists: ['Not Found'],
     })
   },
 }
