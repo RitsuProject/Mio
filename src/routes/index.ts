@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import AnimeThemesController from '../controllers/Repositorys/AnimeThemesController'
-import OpeningsMoeController from '../controllers/Repositorys/OpeningsMoeController'
+import AnimeThemesController from '../controllers/Repositories/AnimeThemesController'
+import OpeningsMoeController from '../controllers/Repositories/OpeningsMoeController'
 import StatusController from '../controllers/StatusController'
 require('express-async-errors')
 const routes = Router()
