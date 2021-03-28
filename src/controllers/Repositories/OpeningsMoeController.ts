@@ -9,7 +9,7 @@ export default {
     const songs = oMResponse.data
     const songDetails = songs[Math.floor(Math.random() * songs.length)]
     const oMDetails = await axios.get<OpeningsMoeResponse>(
-      `https://openings.moe/api/details.php?name=${songDetails.uid}`
+      `https://openings.moe/api/details.php?name=${encodeURI(songDetails.uid)}`
     )
     const song = oMDetails.data
 
@@ -44,7 +44,7 @@ export default {
       })
 
     const oMDetails = await axios.get<OpeningsMoeResponse>(
-      `https://openings.moe/api/details.php?name=${songDetails.uid}`
+      `https://openings.moe/api/details.php?name=${encodeURI(songDetails.uid)}`
     )
     const song = oMDetails.data
 
