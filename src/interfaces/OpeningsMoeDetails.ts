@@ -1,4 +1,4 @@
-export default interface OpeningsMoeResponse {
+export default interface OpeningsMoeDetails {
   uid: number
   title: string
   source: string

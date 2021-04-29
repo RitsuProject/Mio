@@ -1,5 +1,4 @@
 import Series from '../database/entities/Series'
-import Theme from '../database/entities/Theme'
 
 export default async function getRandomThemeByYear(year: number) {
   const series = await Series.find({

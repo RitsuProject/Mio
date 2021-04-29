@@ -4,8 +4,8 @@ import { config } from 'dotenv'
 import { resolve } from 'path'
 import routes from './routes'
 import { readFileSync } from 'fs'
-import bodyParser from 'body-parser'
 import mongoConnect from './database/MongoConnect'
+import morgan from 'morgan'
 
 require('express-async-errors')
 
@@ -16,6 +16,11 @@ const PORT = process.env.PORT || 3001
 
 app.use(cors())
 app.use(express.json())
+app.use(
+  morgan(
+    '[Request] :method (:status) - :url - :response-time ms (UA: :user-agent | IP: :remote-addr)'
+  )
+)
 app.use(routes)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

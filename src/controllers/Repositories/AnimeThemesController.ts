@@ -9,7 +9,8 @@ import { getVideoUrl } from '../../util/getVideoUrl'
 
 export default {
   async getRandomTheme(req: Request, res: Response) {
-    const randomTheme = await getRandomTheme()
+    const themeType = req.query.type || 'both'
+    const randomTheme = await getRandomTheme(themeType.toString())
     const series = await Series.findById(randomTheme.series)
     const video_url = getVideoUrl(randomTheme)
 
@@ -25,6 +26,8 @@ export default {
 
   async getRandomThemeFromYear(req: Request, res: Response) {
     const year = req.query.year
+    const themeType = req.query.type || 'both'
+
     if (!year)
       return res.status(400).json({
         err: 'no_query',
@@ -39,7 +42,19 @@ export default {
         message: 'No anime was found with this year.',
       })
 
-    const theme = await Theme.findOne({ series: series.id })
+    const themeTypeFormated =
+      themeType === 'openings' ? '0' : themeType === 'endings' ? '1' : 'both'
+    const conditions = {
+      series: series.id,
+      type:
+        themeTypeFormated !== 'both'
+          ? themeTypeFormated
+          : {
+              $exists: true,
+            },
+    }
+
+    const theme = await Theme.findOne(conditions)
     const video_url = getVideoUrl(theme)
 
     res.json({
@@ -53,7 +68,8 @@ export default {
   },
 
   async searchByMalID(req: Request, res: Response) {
-    const { malId } = req.query
+    const malId = req.query.malId
+    const themeType = req.query.type || 'both'
     const malIdInt = parseInt(malId.toString())
     if (isNaN(malIdInt))
       return res.status(400).json({
@@ -61,7 +77,10 @@ export default {
         message: 'Query is not a number.',
       })
 
-    const randomTheme = await getRandomThemeByMALID(malIdInt)
+    const randomTheme = await getRandomThemeByMALID(
+      malIdInt,
+      themeType.toString()
+    )
     if (!randomTheme)
       return res.status(400).json({
         err: 'no_anime',
