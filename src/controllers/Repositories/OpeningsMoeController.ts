@@ -1,14 +1,27 @@
 import axios from 'axios'
 import { Request, Response } from 'express'
-import OpeningsMoeResponse from '../../interfaces/OpeningsMoeResponse'
+import OpeningsMoeDetails from '../../interfaces/OpeningsMoeDetails'
+import OpeningsMoeList from '../../interfaces/OpeningsMoeList'
 
 export default {
   async getRandomTheme(req: Request, res: Response) {
-    const oMResponse = await axios.get('https://openings.moe/api/list.php')
+    const themeType = req.query.type || 'both'
+    const oMResponse = await axios.get<OpeningsMoeList[]>(
+      'https://openings.moe/api/list.php'
+    )
 
-    const songs = oMResponse.data
+    const themeTypeFormated =
+      themeType === 'openings'
+        ? 'Opening'
+        : themeType === 'endings'
+        ? 'Ending'
+        : 'both'
+
+    const songs = oMResponse.data.filter((song) =>
+      themeTypeFormated !== 'both' ? song.uid.includes(themeTypeFormated) : true
+    )
     const songDetails = songs[Math.floor(Math.random() * songs.length)]
-    const oMDetails = await axios.get<OpeningsMoeResponse>(
+    const oMDetails = await axios.get<OpeningsMoeDetails>(
       `https://openings.moe/api/details.php?name=${encodeURI(songDetails.uid)}`
     )
     const song = oMDetails.data
@@ -25,17 +38,30 @@ export default {
   },
 
   async searchAnimeByTitle(req: Request, res: Response) {
-    const { title } = req.query
+    const title = req.query.title
+    const themeType = req.query.type || 'both'
+
     if (!title)
       return res.status(400).json({
         err: 'no_query',
         message: 'No query has specified.',
       })
-    const oMResponse = await axios.get('https://openings.moe/api/list.php')
+    const oMResponse = await axios.get<OpeningsMoeList[]>(
+      'https://openings.moe/api/list.php'
+    )
 
-    const songs = oMResponse.data
+    const themeTypeFormated =
+      themeType === 'openings'
+        ? 'Opening'
+        : themeType === 'endings'
+        ? 'Ending'
+        : 'both'
+
+    const songs = oMResponse.data.filter((song) =>
+      themeTypeFormated !== 'both' ? song.uid.includes(themeTypeFormated) : true
+    )
     const songDetails = songs.filter(
-      (s: OpeningsMoeResponse) => s.source === title
+      (s: OpeningsMoeList) => s.source === title.toString()
     )[0]
     if (!songDetails)
       return res.status(400).json({
@@ -43,7 +69,7 @@ export default {
         message: 'There are no anime.',
       })
 
-    const oMDetails = await axios.get<OpeningsMoeResponse>(
+    const oMDetails = await axios.get<OpeningsMoeDetails>(
       `https://openings.moe/api/details.php?name=${encodeURI(songDetails.uid)}`
     )
     const song = oMDetails.data
