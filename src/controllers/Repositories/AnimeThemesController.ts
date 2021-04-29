@@ -9,7 +9,8 @@ import { getVideoUrl } from '../../util/getVideoUrl'
 
 export default {
   async getRandomTheme(req: Request, res: Response) {
-    const randomTheme = await getRandomTheme()
+    const themeType = req.query.type || 'both'
+    const randomTheme = await getRandomTheme(themeType.toString())
     const series = await Series.findById(randomTheme.series)
     const video_url = getVideoUrl(randomTheme)
 
