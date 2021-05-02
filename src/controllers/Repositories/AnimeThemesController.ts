@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
-import Series from '../../database/entities/Series'
+import Series, { SeriesDocument } from '../../database/entities/Series'
 import Theme from '../../database/entities/Theme'
+import { redis } from '../../database/Redis'
 import getRandomTheme from '../../util/getRandomTheme'
 import getRandomThemeByMALID from '../../util/getRandomThemeByMALID'
 import getRandomThemeByYear from '../../util/getRandomThemeByYear'
@@ -11,7 +12,17 @@ export default {
   async getRandomTheme(req: Request, res: Response) {
     const themeType = req.query.type || 'both'
     const randomTheme = await getRandomTheme(themeType.toString())
-    const series = await Series.findById(randomTheme.series)
+    const cachedSeries = await redis.get(
+      `animethemes:series:${randomTheme.series}`
+    )
+    let series = JSON.parse(cachedSeries) as SeriesDocument
+    if (!cachedSeries) {
+      series = await Series.findById(randomTheme.series)
+      await redis.set(
+        `animethemes:series:${randomTheme.series}`,
+        JSON.stringify(series)
+      )
+    }
     const video_url = getVideoUrl(randomTheme)
 
     res.json({
@@ -86,7 +97,16 @@ export default {
         err: 'no_anime',
         message: 'Not found any anime with this MAL ID.',
       })
-    const series = await Series.findById(randomTheme.series)
+
+    const cachedSeries = await redis.get(`animethemes:series:${randomTheme.id}`)
+    let series = JSON.parse(cachedSeries) as SeriesDocument
+    if (!cachedSeries) {
+      series = await Series.findById(randomTheme.series)
+      await redis.set(
+        `animethemes:series:${randomTheme.series}`,
+        JSON.stringify(series)
+      )
+    }
     const video_url = getVideoUrl(randomTheme)
 
     res.json({

@@ -6,6 +6,7 @@ import routes from './routes'
 import { readFileSync } from 'fs'
 import mongoConnect from './database/MongoConnect'
 import morgan from 'morgan'
+import './database/Redis'
 
 require('express-async-errors')
 
@@ -30,6 +31,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   })
   next(err)
 })
+
 mongoConnect(process.env.MONGO_URI)
 
 app.listen(PORT, async () => {
